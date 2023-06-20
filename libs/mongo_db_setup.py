@@ -1,26 +1,53 @@
-class client_handler:
+class client_setup:
     def __init__(self, hostname:str, port:int):
         """
-        Inicializa el cliente en un host y un puerto definido por el usuario.
-        Opcionalmente se inicia desconectada, habilitar el parámetro connection=True para inicializar la conexión.
+        Inicializa un cliente para base de datos, en un hostname y un puerto definido por el usuario.
 
         args:
 
-            host        (str)       :   El nombre del host a instanciar.
+            hostname    (str)       :   El nombre del host a instanciar.
             port        (int)       :   El puerto donde escuchará la bd.
         """
         from pymongo import MongoClient
         self.__client = MongoClient(host = hostname,
                                     port = port)
-    def get_client(self):
+    def get(self):
+        """
+        Obtiene la instancia del cliente para la base de datos.
+        
+        return:
+
+            client        (object)    :   La instancia creada del cliente para la base de datos.
+        """
         return self.__client
-class database_handler:
+
+class database_setup:
     def __init__(self,client, db_name):
+        """
+        Crea una instancia de base de datos, a partir de un cliente.
+
+        args:
+
+            client      (object)    :   El objeto principal de la instancia cliente.
+            db_name     (str)       :   El nombre de la base de datos a instanciar.
+        """
         self.__client = client
         self.__database = self.get_client()[db_name]
     def get_client(self):
+        """
+        Recupera el cliente del cual fue instanciada la base de datos, para manejar distintas bases de datos.
+
+        return:
+            client        (object)    :   La instancia creada del cliente para la base de datos.
+        """
         return self.__client
-    def get_database(self):
+    def get(self):
+        """
+        Devuelve la base de datos inicializada.
+
+        return:
+            database        (object)    :   La instancia de base de datos actual.
+        """
         return self.__database
     
 class collection_handler:
